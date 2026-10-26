@@ -302,8 +302,6 @@ If you intend to publish this project as open source, consider adding a `LICENSE
 
 - GitHub: [@sudeepsharmatalu](https://github.com/sudeepsharmatalu)
 
-Replace the placeholders with your details.
-
 ---
 
 <p align="center">
