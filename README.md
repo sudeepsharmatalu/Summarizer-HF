@@ -298,7 +298,7 @@ If you intend to publish this project as open source, consider adding a `LICENSE
 
 ## 👨‍💻 Author
 
-**YOUR NAME**
+**Sudeep Sharma**
 
 - GitHub: [@sudeepsharmatalu](https://github.com/sudeepsharmatalu)
 
