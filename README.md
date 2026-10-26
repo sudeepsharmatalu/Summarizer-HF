@@ -300,7 +300,7 @@ If you intend to publish this project as open source, consider adding a `LICENSE
 
 **YOUR NAME**
 
-- GitHub: [@YOUR-USERNAME](https://github.com/YOUR-USERNAME)
+- GitHub: [@sudeepsharmatalu](https://github.com/sudeepsharmatalu)
 
 Replace the placeholders with your details.
 
