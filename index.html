@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Summarizer</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 50px 20px;
+            min-height: 100vh;
+            font-family: "Inter", "Segoe UI", sans-serif;
+            color: #f8fafc;
+            background:
+                radial-gradient(ellipse at 15% 10%, #3b1c36 0%, transparent 40%),
+                radial-gradient(ellipse at 90% 85%, #422006 0%, transparent 38%),
+                #0b0d14;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 0;
+            background: transparent;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0;
+            font-size: clamp(38px, 6vw, 62px);
+            font-weight: 850;
+            letter-spacing: -2.5px;
+            line-height: 1.15;
+            color: #ffffff;
+        }
+
+        h1::after {
+            content: ".";
+            color: #fb923c;
+        }
+
+        h3 {
+            text-align: center;
+            margin: 15px 0 0;
+            color: #a1a1aa;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .container > p {
+            margin: 24px 0 35px;
+            text-align: center;
+            color: #c4c4cc;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            padding: 25px;
+            background: #ffffff;
+            border: 1px solid #27272a;
+            border-radius: 22px;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.3);
+        }
+
+        textarea {
+            width: 100%;
+            height: 230px;
+            padding: 22px;
+            border: 1px solid #e4e4e7;
+            border-radius: 14px;
+            outline: none;
+            resize: vertical;
+            background: #fafafa;
+            color: #18181b;
+            font-family: inherit;
+            font-size: 16px;
+            line-height: 1.8;
+            transition: 0.25s ease;
+        }
+
+        textarea::placeholder {
+            color: #a1a1aa;
+        }
+
+        textarea:focus {
+            border-color: #f97316;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
+        }
+
+        button {
+            width: 100%;
+            min-height: 58px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border: none;
+            border-radius: 13px;
+            color: #ffffff;
+            background: linear-gradient(110deg, #f97316, #ea580c);
+            box-shadow: 0 8px 25px rgba(234, 88, 12, 0.25);
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 750;
+            letter-spacing: 0.2px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button span {
+            font-size: 22px;
+            transition: transform 0.2s ease;
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(234, 88, 12, 0.4);
+        }
+
+        button:hover:not(:disabled) span {
+            transform: translateX(5px);
+        }
+
+        button:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        #summary-output {
+            margin-top: 25px;
+            padding: 28px;
+            min-height: 145px;
+            border-radius: 20px;
+            border: 1px solid #292a34;
+            background: linear-gradient(135deg, #171923, #12141c);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        #summary-heading {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 0 20px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #30313c;
+            color: #fb923c;
+            text-align: left;
+            font-size: 15px;
+            font-weight: 750;
+            letter-spacing: 1px;
+        }
+
+        #summary-heading::before {
+            content: "✦";
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            color: #fb923c;
+            background: rgba(249, 115, 22, 0.12);
+            font-size: 18px;
+        }
+
+        #summary-text {
+            margin: 0;
+            color: #e4e4e7;
+            font-size: 15px;
+            line-height: 1.9;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 40px 15px;
+            }
+
+            h1 {
+                letter-spacing: -1.5px;
+            }
+
+            .container > p {
+                margin: 20px 0 26px;
+                font-size: 14px;
+            }
+
+            form {
+                padding: 13px;
+                border-radius: 17px;
+            }
+
+            textarea {
+                height: 190px;
+                padding: 16px;
+                font-size: 15px;
+            }
+
+            #summary-output {
+                padding: 20px;
+                border-radius: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Text Summarizer</h1>
+        <h3>using HuggingFace Transformer</h3>
+        <p>Write or Paste your content below for quick summarization.</p>
+
+        <form id="summarization-form">
+            <textarea id="dialogue-input" placeholder="Enter your content here..." required></textarea>
+            <button type="submit">Summarize <span aria-hidden="true">→</span></button>
+        </form>
+
+        <div id="summary-output">
+            <h3 id="summary-heading">Content Summary</h3>
+            <p id="summary-text"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("summarization-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const dialogueInput = document.getElementById("dialogue-input");
+            const summaryText = document.getElementById("summary-text");
+            const submitButton = e.target.querySelector("button");
+
+            const dialogue = dialogueInput.value.trim();
+            if (!dialogue) return;
+
+            summaryText.innerText = "Processing...";
+            submitButton.disabled = true;
+
+            try {
+                const response = await fetch("/summarize/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ dialogue }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                summaryText.innerText = data.summary || "No summary returned.";
+            } catch (err) {
+                summaryText.innerText = `Error: ${err.message}`;
+            } finally {
+                submitButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
